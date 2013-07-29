@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Me!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <!-- Loading my styles -->
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="images/favicon.ico">
+  </head>
+  <body onload="load()" style="cursor: auto;">
+      <div class="container-fluid contentMain">
+        <nav class="text_title">
+          <hgroup>
+            <h2>Edit Me!</h2>
+          </hgroup>
+        </nav>
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="row-fluid">
+              <div class="content_textarea draggable ui-widget-content ui-draggable">
+                <textarea class="span6 area_edit" id="code"><h1>Hello World!</h1>
+                </textarea>
+              </div>
+              <div class="draggable span6 area_edit ui-widget-content ui-draggable" id="result"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <div class="span12 botonera">
+          <!--<button class="btn btn-inverse btn-large" id="save">Mostrar</button>-->
+          <button class="btn btn-inverse btn-large" id="remove">+</button>
+        </div>
+      </footer>
+      <!--scripts-->
+      <script src="js/jquery-1.8.3.min.js"></script>
+      <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+      <script src="js/scripts.js"></script>
+      <script>
+        var code = $('#code');
+        var html = $('#result');
+
+         $( ".draggable" ).draggable();
+
+        $('#code').on('keyup',function(){
+          var htmleditable = code.val();
+          validar(htmleditable);
+        });
+
+        $('#remove').on('click',function(){
+          localStorage.removeItem('contentcode');
+          $('.area_edit').text("");
+          code.val('');
+        });
+
+        function load(){
+          if (localStorage.getItem('contentcode')) {
+            var a = localStorage.getItem('contentcode');
+            $('#result').children().remove();
+            code.val(a);
+            html.html($(a));
+          }
+          $('#code').trigger('keyup');
+        }
+        function validar(htmleditable){
+          if (code.val() !== "") {
+            console.log(htmleditable);
+            if ((htmleditable.indexOf('&lt;') !== -1) && (htmleditable.indexOf('&gt;') !== -1)) {
+              localStorage.contentcode = htmleditable;
+              load();
+            } else{
+              localStorage.contentcode = htmleditable;
+              var a = localStorage.getItem('contentcode');
+              $('#result').children().remove();
+              code.val(a);
+              debugger;
+              html.html(a);
+            };
+            
+          }else{
+            alert('Ingresa algo!');//$('#remove').trigger('click');
+            code.empty().focus();
+            html.empty();
+          }
+        }
+      </script>
+  </body>
+</html>
